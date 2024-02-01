@@ -29,8 +29,6 @@ const (
 )
 
 var tcpAddress = "0.0.0.0:1080"
-var username = ""
-var password = ""
 var udpRelayAddress = ""
 var udpRelayAddressIpv4 net.IP = nil
 var udpRelayAddressType byte = 0
@@ -55,7 +53,7 @@ func IsValidAddress() bool {
 func ParseCmd() {
 	/* UDP relay address is required */
 	if len(os.Args) < 2 {
-		fmt.Printf("Usage: %s [UDP Relay Address] <username> <password> <TCP Listening Address>\n", os.Args[0])
+		fmt.Printf("Usage: %s [UDP Relay Address]\n", os.Args[0])
 		os.Exit(-1)
 	}
 
@@ -64,15 +62,6 @@ func ParseCmd() {
 	if !IsValidAddress() {
 		fmt.Println("[FATAL] Invalid IP", os.Args[1])
 		os.Exit(-1)
-	}
-
-	if len(os.Args) > 3 {
-		username = os.Args[2]
-		password = os.Args[3]
-	}
-
-	if len(os.Args) > 4 {
-		tcpAddress = os.Args[4]
 	}
 }
 

@@ -55,22 +55,9 @@ func handleTcp(conn *net.TCPConn) {
 		return
 	}
 
-	/* Method selection */
-	method := selectMethod(buffer[1:n], username != "" && password != "")
-	_, err = conn.Write([]byte{0x5, method})
-	if err != nil || method == 0xff {
-		if err != nil {
-			fmt.Println("[ERROR] Cannot send the method selection reply", err.Error())
-		} else {
-			fmt.Println("[ERROR] Cannot select method for request", buffer, "from", conn.RemoteAddr().String())
-		}
-		conn.Close()
-		return
-	}
-
-	/* Authenticate user if method is username/password */
-	if method == 2 && !authUser(conn, username, password) {
-		fmt.Println("[WARNING] Invalid username/password attempt from", conn.RemoteAddr().String())
+	_, err = conn.Write([]byte{0x5, 0x0})
+	if err != nil {
+		fmt.Println("[ERROR] Cannot send the method selection reply", err.Error())
 		conn.Close()
 		return
 	}
